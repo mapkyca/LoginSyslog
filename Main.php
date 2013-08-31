@@ -25,16 +25,16 @@
             
             function registerPages() {
                 
-                 \Idno\Core\site()->addEventHook('login:failure:nouser', function(\Idno\Core\Event $event) {
-                     Main::syslog("Invalid user ". $event->data()['handle_or_email'] ." from " . Main::getIP(),  LOG_AUTH, LOG_NOTICE);
+                 \Idno\Core\site()->addEventHook('login/failure/nouser', function(\Idno\Core\Event $event) {
+                     Main::syslog("Invalid user ". $event->data()['credentials']['email'] ." from " . Main::getIP(),  LOG_AUTH, LOG_NOTICE);
                  });
                  
-                 \Idno\Core\site()->addEventHook('login:failure:password', function(\Idno\Core\Event $event) {
+                 \Idno\Core\site()->addEventHook('login/failure', function(\Idno\Core\Event $event) {
                      Main::syslog("Authentication failure for ". $event->data()['user']->getHandle() ." from " . Main::getIP(),  LOG_AUTH, LOG_NOTICE);
                  });
                  
-                 \Idno\Core\site()->addEventHook('login:success', function(\Idno\Core\Event $event) {
-                     Main::syslog("Accepted password for ". $event->data()['user']->getHandle() ." from " . Main::getIP(),  LOG_AUTH, LOG_INFO);
+                 \Idno\Core\site()->addEventHook('login/success', function(\Idno\Core\Event $event) {
+                     Main::syslog("Accepted login for ". $event->data()['user']->getHandle() ." from " . Main::getIP(),  LOG_AUTH, LOG_INFO);
                  });
                 
             }
