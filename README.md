@@ -1,17 +1,19 @@
-Syslog logging for idno
-=======================
+Syslog logging for Known (nee idno)
+===================================
 
 This plugin provides syslog events in the auth log for login success and failure.
-
-Requires my dev branch of idno, until at least this <https://github.com/idno/idno/pull/53> is 
-merged into upstream.
 
 Installation
 ------------
 
 * Drop the LoginSyslog folder into the IndoPlugins folder of your idno installation.
-* Log into idno and click on Administration.
+* Log into Known and click on Administration.
 * Click "install" next to LoginSyslog.
+
+Once this is done, login failures will be logged to the auth log as notice, while successful
+log ins will be logged as info.
+
+I recommend combining this with a fail2ban rule (example given in the example directory)
 
 Licence
 -------
