@@ -1,0 +1,1 @@
+<li <?php if ($_SERVER['REQUEST_URI'] == '/account/loginsyslog/') echo 'class="active"'; ?>><a href="/account/loginsyslog/">Account Activity</a></li>

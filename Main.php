@@ -22,19 +22,43 @@
 
                 closelog();
             }
+	    
+	    public function createLogEntry($details, $action) {
+		
+		$item = new LogItem();
+		$item->build($action, $details); 
+		$item->save(); 
+	    }
             
             function registerPages() {
                 
+                // Register admin settings
+                \Idno\Core\site()->addPageHandler('admin/loginsyslog', '\IdnoPlugins\LoginSyslog\Pages\Admin');
+                // Register settings page
+                \Idno\Core\site()->addPageHandler('account/loginsyslog', '\IdnoPlugins\LoginSyslog\Pages\Account');
+                
+                // Add menu items to account & administration screens
+                \Idno\Core\site()->template()->extendTemplate('admin/menu/items', 'admin/LoginSyslog/menu');
+                \Idno\Core\site()->template()->extendTemplate('account/menu/items', 'account/LoginSyslog/menu');
+		
                  \Idno\Core\site()->addEventHook('login/failure/nouser', function(\Idno\Core\Event $event) {
                      Main::syslog("Invalid user ". $event->data()['credentials']['email'] ." from " . Main::getIP(),  LOG_AUTH, LOG_NOTICE);
+		     $this->createLogEntry($event->data()['credentials']['email'], 'Login failure - invalid user');
                  });
                  
                  \Idno\Core\site()->addEventHook('login/failure', function(\Idno\Core\Event $event) {
                      Main::syslog("Authentication failure for ". $event->data()['user']->getHandle() ." from " . Main::getIP(),  LOG_AUTH, LOG_NOTICE);
+		     $this->createLogEntry($event->data()['user'], 'Login attempt failure');
                  });
                  
                  \Idno\Core\site()->addEventHook('login/success', function(\Idno\Core\Event $event) {
                      Main::syslog("Accepted login for ". $event->data()['user']->getHandle() ." from " . Main::getIP(),  LOG_AUTH, LOG_INFO);
+		     $this->createLogEntry($event->data()['user'], 'Logged in successfully');
+                 });
+		 
+		 \Idno\Core\site()->addEventHook('logout/success', function(\Idno\Core\Event $event) {
+                     Main::syslog("User logged out ". $event->data()['user']->getHandle() ." from " . Main::getIP(),  LOG_AUTH, LOG_INFO);
+		     $this->createLogEntry($event->data()['user'], 'Logged out');
                  });
                 
             }
