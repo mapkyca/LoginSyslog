@@ -9,6 +9,12 @@ namespace IdnoPlugins\LoginSyslog {
 	    $this->action = $action;
 	    $this->ip = Main::getIP();
 
+	    // Try and get a geoIP address
+	    if ($geo = \Idno\Core\site()->triggerEvent('geoip/lookup', ['ip' => $this->ip], false)) 
+	    {
+		$this->geo_ip = $geo;
+	    }
+
 	    if (
 		    ($userdetails instanceof \Idno\Entities\User) ||
 		    ($userdetails instanceof \Idno\Entities\RemoteUser)
@@ -27,9 +33,9 @@ namespace IdnoPlugins\LoginSyslog {
 		$new = false;
 	    }
 
-	    /*$this->setAccess('PRIVATE');
-	    $page = \Idno\Core\site()->currentPage();
-	    if ($page) $page->setInput ('access', 'PRIVATE');*/
+	    /* $this->setAccess('PRIVATE');
+	      $page = \Idno\Core\site()->currentPage();
+	      if ($page) $page->setInput ('access', 'PRIVATE'); */
 	    $result = parent::save();
 	}
 
