@@ -27,7 +27,13 @@ if (!empty($vars['items']) && is_array($vars['items'])) {
 	    </div>
 	    <div class="span2">
 		<p>
-		    <small>From <strong><?= $item->ip; ?></strong></small>
+		    <small>From <strong><?= $item->ip; ?></strong><?php
+			if ($item->geo_ip) {
+			    ?>
+			(<?= $item->geo_ip; ?>)
+			<?php
+			}
+		    ?></small>
 		</p>
 	    </div>
 	</div>
