@@ -6,7 +6,7 @@ if (!empty($vars['items']) && is_array($vars['items'])) {
 	?>
 
 	<div class="row <?= strtolower(str_replace('\\', '-', get_class($user))); ?>">
-	    <div class="span3">
+	    <div class="col-md-3">
 		<p>
 		    <?php
 		    if ($item->email) { ?>
@@ -20,12 +20,12 @@ if (!empty($vars['items']) && is_array($vars['items'])) {
 		    <?php } ?>
 		</p>
 	    </div>
-	    <div class="span2">
+	    <div class="col-md-2">
 		<p>
 		    <small><strong><?= $item->action; ?></strong><br><time datetime="<?= date('r', $item->created) ?>" class="dt-published"><?= date('r', $item->created) ?></time></small>
 		</p>
 	    </div>
-	    <div class="span2">
+	    <div class="col-md-2">
 		<p>
 		    <small>From <strong><?= $item->ip; ?></strong><?php
 			if ($item->geo_ip) {
