@@ -3,7 +3,7 @@
     namespace IdnoPlugins\LoginSyslog {
 
         class Main extends \Idno\Common\Plugin {
-            
+	                
             public static function getIP() {
                 // Work out IP address (if behind proxy)
                 $ip = $_SERVER['REMOTE_ADDR'];
@@ -30,8 +30,8 @@
 		$item->save(); 
 	    }
             
-            function registerPages() {
-                
+	    function registerPages() {
+		
                 // Register admin settings
                 \Idno\Core\site()->addPageHandler('admin/loginsyslog', '\IdnoPlugins\LoginSyslog\Pages\Admin');
                 // Register settings page
@@ -40,7 +40,10 @@
                 // Add menu items to account & administration screens
                 \Idno\Core\site()->template()->extendTemplate('admin/menu/items', 'admin/LoginSyslog/menu');
                 \Idno\Core\site()->template()->extendTemplate('account/menu/items', 'account/LoginSyslog/menu');
-		
+	    }
+	    
+            function registerEventHooks() {
+
                  \Idno\Core\site()->addEventHook('login/failure/nouser', function(\Idno\Core\Event $event) {
                      Main::syslog("Invalid user ". $event->data()['credentials']['email'] ." from " . Main::getIP(),  LOG_AUTH, LOG_NOTICE);
 		     $this->createLogEntry($event->data()['credentials']['email'], 'Login failure - invalid user');
