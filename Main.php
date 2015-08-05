@@ -53,6 +53,10 @@
                      Main::syslog("Authentication failure for ". $event->data()['user']->getHandle() ." from " . Main::getIP(),  LOG_AUTH, LOG_NOTICE);
 		     $this->createLogEntry($event->data()['user'], 'Login attempt failure');
                  });
+		 
+		 \Idno\Core\site()->addEventHook('login/failure/api', function(\Idno\Core\Event $event) { 
+                     Main::syslog("Authentication failure for API User from " . Main::getIP(),  LOG_AUTH, LOG_NOTICE); 
+                 });
                  
                  \Idno\Core\site()->addEventHook('login/success', function(\Idno\Core\Event $event) {
                      Main::syslog("Accepted login for ". $event->data()['user']->getHandle() ." from " . Main::getIP(),  LOG_AUTH, LOG_INFO);
